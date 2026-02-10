@@ -1,0 +1,23 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Update global foreground text token to neon green",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "summary": "Update Tailwind theme foreground token so default `text-foreground` renders neon green in both light and dark themes across the UI.",
+      "acceptanceCriteria": [
+        "All default text that currently derives from the `foreground` theme token renders in a neon-green color across the app (Header, HeroSection, tabs, panels, tables, dialogs).",
+        "The change is implemented via theme variables (e.g., in `frontend/src/index.css`) rather than ad-hoc per-component overrides, so the color is consistent across screens.",
+        "Both light mode (`:root`) and dark mode (`.dark`) have neon-green foreground text with readable contrast against the existing dark-green/black backgrounds."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/index.css",
+          "operation": "modify",
+          "description": "Change the theme CSS variables for `--foreground` (and the matching text foreground variables that currently mirror it, such as `--card-foreground`, `--popover-foreground`, and `--secondary-foreground`) in both `:root` and `.dark` to a neon-green OKLCH value, ensuring adequate contrast against existing dark green backgrounds. Keep the implementation token-based (no per-component overrides) and do not edit any files under `frontend/src/components/ui`."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "kind": "build_request",
+  "title": "Update global text color to neon green",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "text": "Change the app’s default text color to neon green across the UI by updating the Tailwind theme tokens so that all elements using the standard foreground text color (e.g., body text via `text-foreground`) render in neon green in both light and dark themes.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Make the text neon green"
+        ]
+      },
+      "acceptanceCriteria": [
+        "All default text that currently derives from the `foreground` theme token renders in a neon-green color across the app (Header, HeroSection, tabs, panels, tables, dialogs).",
+        "The change is implemented via theme variables (e.g., in `frontend/src/index.css`) rather than ad-hoc per-component overrides, so the color is consistent across screens.",
+        "Both light mode (`:root`) and dark mode (`.dark`) have neon-green foreground text with readable contrast against the existing dark-green/black backgrounds."
+      ]
+    }
+  ],
+  "constraints": [
+    "Do not edit files under `frontend/src/components/ui` (read-only UI component sources).",
+    "Backend (Motoko) logic must remain unchanged for this styling-only request."
+  ],
+  "nonGoals": [
+    "Do not redesign layouts, spacing, typography, or component structure beyond what is necessary to achieve neon-green text.",
+    "Do not change non-text colors (backgrounds, borders, card fills) unless required to preserve readability/contrast."
+  ],
+  "imageRequirements": {
+    "required": [],
+    "edits": []
+  }
+}
