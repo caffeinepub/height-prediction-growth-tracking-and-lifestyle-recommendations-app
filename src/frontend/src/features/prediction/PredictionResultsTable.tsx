@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
-import type { HeightPrediction } from '../../backend';
+import type { HeightPrediction } from '../../types/app-types';
 import { cmToFeetInches } from '../../utils/units';
 
 interface PredictionResultsTableProps {

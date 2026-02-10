@@ -1,37 +1,37 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Make global text render green by fixing Tailwind OKLCH token variables",
+  "title": "Frontend maintenance mode gate with full-page downtime screen",
   "requirements": [
     {
       "id": "REQ-1",
-      "summary": "Update theme CSS variables to use raw OKLCH components so Tailwind’s `text-foreground` resolves to green in light and dark modes.",
+      "summary": "Add a frontend-configurable maintenance mode that replaces the entire app UI with a full-page maintenance message.",
       "acceptanceCriteria": [
-        "After rebuild, body text (inherited default text) renders green across the app screens (Hero, Header, tabs, forms, panels) without requiring per-component overrides.",
-        "`frontend/src/index.css` uses variable values compatible with `tailwind.config.js` (no nested `oklch(oklch(...))` patterns for theme tokens like `--foreground`, `--background`, `--card`, `--muted`, etc.).",
-        "In both light and dark modes, `text-foreground` results in green text that is visibly different from white/gray/black.",
-        "No changes are made to any frontend immutable paths (e.g., `frontend/src/main.tsx`, `frontend/src/hooks/useInternetIdentity.ts(x)`, `frontend/src/hooks/useActor.ts`, `frontend/src/components/ui/*`)."
+        "A new environment variable is documented in frontend/.env.example (e.g., VITE_MAINTENANCE_MODE) with guidance on accepted values.",
+        "When maintenance mode is enabled, the app renders a maintenance screen and does not render the normal application content (HeroSection/MainContent) or show authentication actions.",
+        "The maintenance screen user-facing text is in English and clearly indicates the app is temporarily unavailable.",
+        "When maintenance mode is disabled/unset, the app behaves exactly as it did before the change."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/index.css",
+          "path": "frontend/.env.example",
           "operation": "modify",
-          "description": "Replace `--*` theme token values currently written as `oklch(...)` with raw OKLCH components (e.g., `--foreground: 0.88 0.28 145;`) so Tailwind’s `oklch(var(--...))` wrapping in `frontend/tailwind.config.js` does not create nested `oklch(oklch(...))`. Ensure both `:root` and `.dark` define `--foreground` (and related `*-foreground` tokens like `--card-foreground`, `--popover-foreground`, `--secondary-foreground`, etc.) as clearly green so default/inherited text becomes visibly green across the UI."
-        }
-      ]
-    },
-    {
-      "id": "REQ-2",
-      "summary": "Remove/replace non-token text color usage in non-immutable components so text follows theme tokens and renders green by default.",
-      "acceptanceCriteria": [
-        "Spot-check: Header brand text, tab labels, panel titles, form labels/inputs, tables, and recommendation text all appear green (or green-tinted via theme tokens) rather than default black/white.",
-        "Any explicit text color utility classes that prevent the global green text from showing are removed/replaced in non-immutable components."
-      ],
-      "file_operations": [
+          "description": "Document a new Vite env var (VITE_MAINTENANCE_MODE) that controls maintenance mode, including accepted values (e.g., true/1/on/yes to enable; false/0/off/no or unset to disable) and a brief note that it is evaluated at build/runtime per Vite env behavior."
+        },
         {
-          "path": "frontend/src/features/growth/GrowthChart.tsx",
+          "path": "frontend/src/config/maintenance.ts",
+          "operation": "create",
+          "description": "Add a small env parsing helper (e.g., reading import.meta.env.VITE_MAINTENANCE_MODE and normalizing common truthy/falsey strings) and export a boolean flag used by the app to decide whether to show the maintenance screen."
+        },
+        {
+          "path": "frontend/src/components/MaintenanceScreen.tsx",
+          "operation": "create",
+          "description": "Create a full-page MaintenanceScreen component (English copy) that clearly states the app is temporarily unavailable; ensure it is self-contained and does not include header/footer/auth controls."
+        },
+        {
+          "path": "frontend/src/App.tsx",
           "operation": "modify",
-          "description": "Audit and update any hardcoded or token-incompatible color strings used for chart axes/tooltip styling (e.g., `hsl(var(--muted-foreground))`, `hsl(var(--popover))`, `hsl(var(--border))`, `hsl(var(--chart-1))`) so they correctly reference the app’s Tailwind OKLCH token variables (using `oklch(var(--...))`-compatible values) and therefore render green-tinted text/labels consistently with the theme."
+          "description": "Wire maintenance mode into the root UI: read the maintenance flag and, when enabled, render only the MaintenanceScreen (no AppShell/Header/Footer/HeroSection/MainContent/ProfileSetupDialog/Toaster). Refactor to avoid calling authentication/profile hooks in maintenance mode by moving normal app rendering into a separate component that is only mounted when maintenance mode is disabled."
         }
       ]
     }

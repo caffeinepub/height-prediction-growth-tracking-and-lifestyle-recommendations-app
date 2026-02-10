@@ -1,35 +1,30 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-10T07:20:15.210Z",
+  "generatedAt": "2026-02-10T07:57:17.637Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 2,
-    "implemented": 2,
+    "total": 1,
+    "implemented": 1,
     "items": [
       {
         "id": "REQ-1",
-        "summary": "Fix the Tailwind theme token values so the app’s default text color actually applies as green across the UI (all normal text that uses `text-foreground` / inherits from `body`). Update `frontend/src/index.css` CSS variables to match the format expected by `frontend/tailwind.config.js` (i.e., variables should be raw OKLCH components like `0.88 0.28 145`, not `oklch(...)`, because Tailwind already wraps them with `oklch(var(--...))`). Ensure both `:root` and `.dark` define `--foreground` (and related `*-foreground` variables used for typical text) as green so the user-visible text changes are clearly visible.",
+        "summary": "Add a frontend-configurable \"maintenance mode\" that, when enabled, prevents normal app usage and displays a full-page maintenance message instead of the main application UI (header, hero, main content, footer).",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/index.css"
+          "frontend/.env.example",
+          "frontend/src/config/maintenance.ts",
+          "frontend/src/components/MaintenanceScreen.tsx",
+          "frontend/src/App.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/index.css"
-        ]
-      },
-      {
-        "id": "REQ-2",
-        "summary": "Audit and update any non-immutable UI components that hardcode text colors (e.g., `text-black`, `text-white`, or other non-token colors) so that user-facing text follows the theme tokens (prefer `text-foreground`, `text-muted-foreground`, `text-primary`, etc.) and therefore renders green by default as requested.",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/features/growth/GrowthChart.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/src/features/growth/GrowthChart.tsx"
+          "frontend/.env.example",
+          "frontend/src/config/maintenance.ts",
+          "frontend/src/components/MaintenanceScreen.tsx",
+          "frontend/src/App.tsx"
         ]
       }
     ]
@@ -39,8 +34,11 @@
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/src/features/growth/GrowthChart.tsx",
-    "frontend/src/index.css",
+    "frontend/.env.example",
+    "frontend/src/App.tsx",
+    "frontend/src/components/MaintenanceScreen.tsx",
+    "frontend/src/components/NormalApp.tsx",
+    "frontend/src/config/maintenance.ts",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

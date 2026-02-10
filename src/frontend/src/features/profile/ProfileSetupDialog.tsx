@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useSaveCallerUserProfile } from '../../hooks/useQueries';
-import type { UserProfile } from '../../backend';
+import type { UserProfile } from '../../types/app-types';
 
 export function ProfileSetupDialog() {
   const [name, setName] = useState('');

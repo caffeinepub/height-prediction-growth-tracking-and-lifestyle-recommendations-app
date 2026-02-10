@@ -1,40 +1,33 @@
 {
   "kind": "spec_vs_diff_report",
   "version": "1.0",
-  "generatedAt": "2026-02-10T07:20:15.207Z",
-  "summary": "REQ-1 appears implemented via updating `frontend/src/index.css` Tailwind theme CSS variables to raw OKLCH components and setting `body` to `text-foreground`, with green foreground values in both `:root` and `.dark`. REQ-2 (auditing/updating non-immutable UI components that hardcode text colors) is not evidenced in the provided code diffs beyond a single chart component. Additional non-requested changes include updates to `project_state.json` and a generated `frontend-file-summaries.txt` file.",
-  "missing_requirements": [
-    {
-      "id": "REQ-2",
-      "requirement": "Audit and update any non-immutable UI components that hardcode text colors (e.g., `text-black`, `text-white`, or other non-token colors) so user-facing text follows theme tokens (e.g., `text-foreground`, `text-muted-foreground`, `text-primary`).",
-      "reason": "The diff only shows updates to `frontend/src/features/growth/GrowthChart.tsx` and global theme variables in `frontend/src/index.css`. No other non-immutable UI components (Header, tabs, panels, forms, tables, recommendations, etc.) are shown being updated to remove/replace hardcoded text color utilities.",
-      "evidence": [
-        "frontend/src/features/growth/GrowthChart.tsx",
-        "frontend/src/index.css"
-      ]
-    }
-  ],
+  "generatedAt": "2026-02-10T07:57:17.635Z",
+  "summary": "REQ-1 appears implemented: a VITE_MAINTENANCE_MODE env var is documented in frontend/.env.example; the app conditionally renders a full-page MaintenanceScreen instead of the normal AppShell/HeroSection/MainContent when enabled; maintenance text is in English; and normal UI is rendered when maintenance mode is disabled.",
+  "missing_requirements": [],
   "hallucinated_features": [
     {
-      "description": "Updated project bookkeeping/state file with new feature request entries and statuses.",
-      "reason": "The BuildRequest is about fixing global text color; it does not request modifying project metadata/state tracking files.",
+      "description": "Project metadata/state tracking update unrelated to maintenance mode (marks feature request AR-1/REQ-1 as pending).",
+      "reason": "BuildRequest does not mention updating project_state.json or tracking request status.",
       "evidence": [
         "project_state.json"
       ]
     },
     {
-      "description": "Modified/updated a generated file containing summaries of frontend source files.",
-      "reason": "The BuildRequest does not request adding or updating documentation/summary artifacts like `frontend-file-summaries.txt`.",
+      "description": "Update to frontend-file-summaries.txt (documentation/index of frontend files) not requested as part of maintenance mode feature.",
+      "reason": "BuildRequest requirements/acceptance criteria do not ask for updating summary/index files.",
       "evidence": [
         "frontend-file-summaries.txt"
       ]
     }
   ],
-  "confidence": 0.72,
+  "confidence": 0.78,
   "changed_files": [
     "frontend-file-summaries.txt",
-    "frontend/src/features/growth/GrowthChart.tsx",
-    "frontend/src/index.css",
+    "frontend/.env.example",
+    "frontend/src/App.tsx",
+    "frontend/src/components/MaintenanceScreen.tsx",
+    "frontend/src/components/NormalApp.tsx",
+    "frontend/src/config/maintenance.ts",
     "project_state.json"
   ]
 }

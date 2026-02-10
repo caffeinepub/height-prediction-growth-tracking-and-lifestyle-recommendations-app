@@ -10,49 +10,14 @@ import type { ActorMethod } from '@icp-sdk/core/agent';
 import type { IDL } from '@icp-sdk/core/candid';
 import type { Principal } from '@icp-sdk/core/principal';
 
-export interface FormulaResult {
-  'name' : string,
-  'enabled' : boolean,
-  'predictedHeightCm' : number,
-}
-export interface HeightMeasurement {
-  'id' : bigint,
-  'heightCm' : number,
-  'timestamp' : bigint,
-}
-export interface HeightPrediction {
-  'averageHeightCm' : number,
-  'timestamp' : bigint,
-  'predictionCounts' : bigint,
-  'formulaResults' : Array<FormulaResult>,
-  'activeFormulaCount' : bigint,
-}
-export interface UserProfile {
-  'age' : number,
-  'currentHeightCm' : [] | [number],
-  'motherHeightCm' : number,
-  'isMale' : boolean,
-  'gender' : string,
-  'fatherHeightCm' : number,
-}
 export type UserRole = { 'admin' : null } |
   { 'user' : null } |
   { 'guest' : null };
 export interface _SERVICE {
   '_initializeAccessControlWithSecret' : ActorMethod<[string], undefined>,
-  'addGrowthLog' : ActorMethod<[number], undefined>,
   'assignCallerUserRole' : ActorMethod<[Principal, UserRole], undefined>,
-  'deleteGrowthLog' : ActorMethod<[bigint], undefined>,
-  'getCallerUserProfile' : ActorMethod<[], [] | [UserProfile]>,
   'getCallerUserRole' : ActorMethod<[], UserRole>,
-  'getGrowthLogs' : ActorMethod<[], Array<HeightMeasurement>>,
-  'getGrowthLogsChronological' : ActorMethod<[], Array<HeightMeasurement>>,
-  'getSavedPredictions' : ActorMethod<[], [] | [HeightPrediction]>,
-  'getUserProfile' : ActorMethod<[Principal], [] | [UserProfile]>,
   'isCallerAdmin' : ActorMethod<[], boolean>,
-  'saveCallerUserProfile' : ActorMethod<[UserProfile], undefined>,
-  'savePrediction' : ActorMethod<[HeightPrediction], undefined>,
-  'updateGrowthLog' : ActorMethod<[bigint, number], undefined>,
 }
 export declare const idlService: IDL.ServiceClass;
 export declare const idlInitArgs: IDL.Type[];

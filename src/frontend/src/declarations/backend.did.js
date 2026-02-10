@@ -13,55 +13,12 @@ export const UserRole = IDL.Variant({
   'user' : IDL.Null,
   'guest' : IDL.Null,
 });
-export const UserProfile = IDL.Record({
-  'age' : IDL.Float64,
-  'currentHeightCm' : IDL.Opt(IDL.Float64),
-  'motherHeightCm' : IDL.Float64,
-  'isMale' : IDL.Bool,
-  'gender' : IDL.Text,
-  'fatherHeightCm' : IDL.Float64,
-});
-export const HeightMeasurement = IDL.Record({
-  'id' : IDL.Nat,
-  'heightCm' : IDL.Float64,
-  'timestamp' : IDL.Int,
-});
-export const FormulaResult = IDL.Record({
-  'name' : IDL.Text,
-  'enabled' : IDL.Bool,
-  'predictedHeightCm' : IDL.Float64,
-});
-export const HeightPrediction = IDL.Record({
-  'averageHeightCm' : IDL.Float64,
-  'timestamp' : IDL.Int,
-  'predictionCounts' : IDL.Nat,
-  'formulaResults' : IDL.Vec(FormulaResult),
-  'activeFormulaCount' : IDL.Nat,
-});
 
 export const idlService = IDL.Service({
   '_initializeAccessControlWithSecret' : IDL.Func([IDL.Text], [], []),
-  'addGrowthLog' : IDL.Func([IDL.Float64], [], []),
   'assignCallerUserRole' : IDL.Func([IDL.Principal, UserRole], [], []),
-  'deleteGrowthLog' : IDL.Func([IDL.Nat], [], []),
-  'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
   'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
-  'getGrowthLogs' : IDL.Func([], [IDL.Vec(HeightMeasurement)], ['query']),
-  'getGrowthLogsChronological' : IDL.Func(
-      [],
-      [IDL.Vec(HeightMeasurement)],
-      ['query'],
-    ),
-  'getSavedPredictions' : IDL.Func([], [IDL.Opt(HeightPrediction)], ['query']),
-  'getUserProfile' : IDL.Func(
-      [IDL.Principal],
-      [IDL.Opt(UserProfile)],
-      ['query'],
-    ),
   'isCallerAdmin' : IDL.Func([], [IDL.Bool], ['query']),
-  'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
-  'savePrediction' : IDL.Func([HeightPrediction], [], []),
-  'updateGrowthLog' : IDL.Func([IDL.Nat, IDL.Float64], [], []),
 });
 
 export const idlInitArgs = [];
@@ -72,59 +29,12 @@ export const idlFactory = ({ IDL }) => {
     'user' : IDL.Null,
     'guest' : IDL.Null,
   });
-  const UserProfile = IDL.Record({
-    'age' : IDL.Float64,
-    'currentHeightCm' : IDL.Opt(IDL.Float64),
-    'motherHeightCm' : IDL.Float64,
-    'isMale' : IDL.Bool,
-    'gender' : IDL.Text,
-    'fatherHeightCm' : IDL.Float64,
-  });
-  const HeightMeasurement = IDL.Record({
-    'id' : IDL.Nat,
-    'heightCm' : IDL.Float64,
-    'timestamp' : IDL.Int,
-  });
-  const FormulaResult = IDL.Record({
-    'name' : IDL.Text,
-    'enabled' : IDL.Bool,
-    'predictedHeightCm' : IDL.Float64,
-  });
-  const HeightPrediction = IDL.Record({
-    'averageHeightCm' : IDL.Float64,
-    'timestamp' : IDL.Int,
-    'predictionCounts' : IDL.Nat,
-    'formulaResults' : IDL.Vec(FormulaResult),
-    'activeFormulaCount' : IDL.Nat,
-  });
   
   return IDL.Service({
     '_initializeAccessControlWithSecret' : IDL.Func([IDL.Text], [], []),
-    'addGrowthLog' : IDL.Func([IDL.Float64], [], []),
     'assignCallerUserRole' : IDL.Func([IDL.Principal, UserRole], [], []),
-    'deleteGrowthLog' : IDL.Func([IDL.Nat], [], []),
-    'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
     'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
-    'getGrowthLogs' : IDL.Func([], [IDL.Vec(HeightMeasurement)], ['query']),
-    'getGrowthLogsChronological' : IDL.Func(
-        [],
-        [IDL.Vec(HeightMeasurement)],
-        ['query'],
-      ),
-    'getSavedPredictions' : IDL.Func(
-        [],
-        [IDL.Opt(HeightPrediction)],
-        ['query'],
-      ),
-    'getUserProfile' : IDL.Func(
-        [IDL.Principal],
-        [IDL.Opt(UserProfile)],
-        ['query'],
-      ),
     'isCallerAdmin' : IDL.Func([], [IDL.Bool], ['query']),
-    'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
-    'savePrediction' : IDL.Func([HeightPrediction], [], []),
-    'updateGrowthLog' : IDL.Func([IDL.Nat, IDL.Float64], [], []),
   });
 };
 

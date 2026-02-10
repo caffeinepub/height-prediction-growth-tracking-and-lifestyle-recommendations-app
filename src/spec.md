@@ -1,10 +1,11 @@
 # Specification
 
 ## Summary
-**Goal:** Make the app’s default/global text color render as green across the entire UI by fixing Tailwind theme token variables and removing hardcoded conflicting text colors in non-immutable components.
+**Goal:** Add a frontend-configurable maintenance mode that disables normal app usage and shows a full-page maintenance message.
 
 **Planned changes:**
-- Update `frontend/src/index.css` CSS variable values to the raw OKLCH component format expected by `frontend/tailwind.config.js` (avoid `oklch(...)` inside variables), ensuring `--foreground` and related `*-foreground` tokens are defined as green in both `:root` and `.dark`.
-- Audit non-immutable frontend components and replace/remove hardcoded text color utility classes (e.g., `text-black`, `text-white`) so user-facing text follows theme tokens like `text-foreground` / `text-muted-foreground` / `text-primary`.
+- Add and document a new frontend environment variable (e.g., `VITE_MAINTENANCE_MODE`) in `frontend/.env.example`, including accepted values.
+- Gate the main application UI behind the maintenance-mode flag so that, when enabled, the app renders only a full-page maintenance screen (and hides header/hero/main content/footer and authentication actions).
+- Ensure all maintenance screen user-facing text is in English and clearly communicates temporary unavailability.
 
-**User-visible outcome:** After rebuild, default/inherited body text and typical UI text (header, hero, tabs, forms, panels, etc.) appears green in both light and dark mode without needing per-component overrides.
+**User-visible outcome:** When maintenance mode is enabled, users see a full-page “temporarily unavailable” maintenance message instead of the normal app; when disabled or unset, the app behaves exactly as before.

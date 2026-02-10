@@ -89,31 +89,6 @@ export class ExternalBlob {
         return this;
     }
 }
-export interface HeightMeasurement {
-    id: bigint;
-    heightCm: number;
-    timestamp: bigint;
-}
-export interface FormulaResult {
-    name: string;
-    enabled: boolean;
-    predictedHeightCm: number;
-}
-export interface UserProfile {
-    age: number;
-    currentHeightCm?: number;
-    motherHeightCm: number;
-    isMale: boolean;
-    gender: string;
-    fatherHeightCm: number;
-}
-export interface HeightPrediction {
-    averageHeightCm: number;
-    timestamp: bigint;
-    predictionCounts: bigint;
-    formulaResults: Array<FormulaResult>;
-    activeFormulaCount: bigint;
-}
 export enum UserRole {
     admin = "admin",
     user = "user",
@@ -121,21 +96,11 @@ export enum UserRole {
 }
 export interface backendInterface {
     _initializeAccessControlWithSecret(userSecret: string): Promise<void>;
-    addGrowthLog(heightCm: number): Promise<void>;
     assignCallerUserRole(user: Principal, role: UserRole): Promise<void>;
-    deleteGrowthLog(id: bigint): Promise<void>;
-    getCallerUserProfile(): Promise<UserProfile | null>;
     getCallerUserRole(): Promise<UserRole>;
-    getGrowthLogs(): Promise<Array<HeightMeasurement>>;
-    getGrowthLogsChronological(): Promise<Array<HeightMeasurement>>;
-    getSavedPredictions(): Promise<HeightPrediction | null>;
-    getUserProfile(user: Principal): Promise<UserProfile | null>;
     isCallerAdmin(): Promise<boolean>;
-    saveCallerUserProfile(profile: UserProfile): Promise<void>;
-    savePrediction(prediction: HeightPrediction): Promise<void>;
-    updateGrowthLog(id: bigint, newHeight: number): Promise<void>;
 }
-import type { HeightPrediction as _HeightPrediction, UserProfile as _UserProfile, UserRole as _UserRole } from "./declarations/backend.did.d.ts";
+import type { UserRole as _UserRole } from "./declarations/backend.did.d.ts";
 export class Backend implements backendInterface {
     constructor(private actor: ActorSubclass<_SERVICE>, private _uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, private _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, private processError?: (error: unknown) => never){}
     async _initializeAccessControlWithSecret(arg0: string): Promise<void> {
@@ -149,20 +114,6 @@ export class Backend implements backendInterface {
             }
         } else {
             const result = await this.actor._initializeAccessControlWithSecret(arg0);
-            return result;
-        }
-    }
-    async addGrowthLog(arg0: number): Promise<void> {
-        if (this.processError) {
-            try {
-                const result = await this.actor.addGrowthLog(arg0);
-                return result;
-            } catch (e) {
-                this.processError(e);
-                throw new Error("unreachable");
-            }
-        } else {
-            const result = await this.actor.addGrowthLog(arg0);
             return result;
         }
     }
@@ -180,102 +131,18 @@ export class Backend implements backendInterface {
             return result;
         }
     }
-    async deleteGrowthLog(arg0: bigint): Promise<void> {
-        if (this.processError) {
-            try {
-                const result = await this.actor.deleteGrowthLog(arg0);
-                return result;
-            } catch (e) {
-                this.processError(e);
-                throw new Error("unreachable");
-            }
-        } else {
-            const result = await this.actor.deleteGrowthLog(arg0);
-            return result;
-        }
-    }
-    async getCallerUserProfile(): Promise<UserProfile | null> {
-        if (this.processError) {
-            try {
-                const result = await this.actor.getCallerUserProfile();
-                return from_candid_opt_n3(this._uploadFile, this._downloadFile, result);
-            } catch (e) {
-                this.processError(e);
-                throw new Error("unreachable");
-            }
-        } else {
-            const result = await this.actor.getCallerUserProfile();
-            return from_candid_opt_n3(this._uploadFile, this._downloadFile, result);
-        }
-    }
     async getCallerUserRole(): Promise<UserRole> {
         if (this.processError) {
             try {
                 const result = await this.actor.getCallerUserRole();
-                return from_candid_UserRole_n7(this._uploadFile, this._downloadFile, result);
+                return from_candid_UserRole_n3(this._uploadFile, this._downloadFile, result);
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
             const result = await this.actor.getCallerUserRole();
-            return from_candid_UserRole_n7(this._uploadFile, this._downloadFile, result);
-        }
-    }
-    async getGrowthLogs(): Promise<Array<HeightMeasurement>> {
-        if (this.processError) {
-            try {
-                const result = await this.actor.getGrowthLogs();
-                return result;
-            } catch (e) {
-                this.processError(e);
-                throw new Error("unreachable");
-            }
-        } else {
-            const result = await this.actor.getGrowthLogs();
-            return result;
-        }
-    }
-    async getGrowthLogsChronological(): Promise<Array<HeightMeasurement>> {
-        if (this.processError) {
-            try {
-                const result = await this.actor.getGrowthLogsChronological();
-                return result;
-            } catch (e) {
-                this.processError(e);
-                throw new Error("unreachable");
-            }
-        } else {
-            const result = await this.actor.getGrowthLogsChronological();
-            return result;
-        }
-    }
-    async getSavedPredictions(): Promise<HeightPrediction | null> {
-        if (this.processError) {
-            try {
-                const result = await this.actor.getSavedPredictions();
-                return from_candid_opt_n9(this._uploadFile, this._downloadFile, result);
-            } catch (e) {
-                this.processError(e);
-                throw new Error("unreachable");
-            }
-        } else {
-            const result = await this.actor.getSavedPredictions();
-            return from_candid_opt_n9(this._uploadFile, this._downloadFile, result);
-        }
-    }
-    async getUserProfile(arg0: Principal): Promise<UserProfile | null> {
-        if (this.processError) {
-            try {
-                const result = await this.actor.getUserProfile(arg0);
-                return from_candid_opt_n3(this._uploadFile, this._downloadFile, result);
-            } catch (e) {
-                this.processError(e);
-                throw new Error("unreachable");
-            }
-        } else {
-            const result = await this.actor.getUserProfile(arg0);
-            return from_candid_opt_n3(this._uploadFile, this._downloadFile, result);
+            return from_candid_UserRole_n3(this._uploadFile, this._downloadFile, result);
         }
     }
     async isCallerAdmin(): Promise<boolean> {
@@ -292,89 +159,11 @@ export class Backend implements backendInterface {
             return result;
         }
     }
-    async saveCallerUserProfile(arg0: UserProfile): Promise<void> {
-        if (this.processError) {
-            try {
-                const result = await this.actor.saveCallerUserProfile(to_candid_UserProfile_n10(this._uploadFile, this._downloadFile, arg0));
-                return result;
-            } catch (e) {
-                this.processError(e);
-                throw new Error("unreachable");
-            }
-        } else {
-            const result = await this.actor.saveCallerUserProfile(to_candid_UserProfile_n10(this._uploadFile, this._downloadFile, arg0));
-            return result;
-        }
-    }
-    async savePrediction(arg0: HeightPrediction): Promise<void> {
-        if (this.processError) {
-            try {
-                const result = await this.actor.savePrediction(arg0);
-                return result;
-            } catch (e) {
-                this.processError(e);
-                throw new Error("unreachable");
-            }
-        } else {
-            const result = await this.actor.savePrediction(arg0);
-            return result;
-        }
-    }
-    async updateGrowthLog(arg0: bigint, arg1: number): Promise<void> {
-        if (this.processError) {
-            try {
-                const result = await this.actor.updateGrowthLog(arg0, arg1);
-                return result;
-            } catch (e) {
-                this.processError(e);
-                throw new Error("unreachable");
-            }
-        } else {
-            const result = await this.actor.updateGrowthLog(arg0, arg1);
-            return result;
-        }
-    }
 }
-function from_candid_UserProfile_n4(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _UserProfile): UserProfile {
-    return from_candid_record_n5(_uploadFile, _downloadFile, value);
+function from_candid_UserRole_n3(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _UserRole): UserRole {
+    return from_candid_variant_n4(_uploadFile, _downloadFile, value);
 }
-function from_candid_UserRole_n7(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _UserRole): UserRole {
-    return from_candid_variant_n8(_uploadFile, _downloadFile, value);
-}
-function from_candid_opt_n3(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: [] | [_UserProfile]): UserProfile | null {
-    return value.length === 0 ? null : from_candid_UserProfile_n4(_uploadFile, _downloadFile, value[0]);
-}
-function from_candid_opt_n6(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: [] | [number]): number | null {
-    return value.length === 0 ? null : value[0];
-}
-function from_candid_opt_n9(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: [] | [_HeightPrediction]): HeightPrediction | null {
-    return value.length === 0 ? null : value[0];
-}
-function from_candid_record_n5(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
-    age: number;
-    currentHeightCm: [] | [number];
-    motherHeightCm: number;
-    isMale: boolean;
-    gender: string;
-    fatherHeightCm: number;
-}): {
-    age: number;
-    currentHeightCm?: number;
-    motherHeightCm: number;
-    isMale: boolean;
-    gender: string;
-    fatherHeightCm: number;
-} {
-    return {
-        age: value.age,
-        currentHeightCm: record_opt_to_undefined(from_candid_opt_n6(_uploadFile, _downloadFile, value.currentHeightCm)),
-        motherHeightCm: value.motherHeightCm,
-        isMale: value.isMale,
-        gender: value.gender,
-        fatherHeightCm: value.fatherHeightCm
-    };
-}
-function from_candid_variant_n8(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+function from_candid_variant_n4(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
     admin: null;
 } | {
     user: null;
@@ -383,35 +172,8 @@ function from_candid_variant_n8(_uploadFile: (file: ExternalBlob) => Promise<Uin
 }): UserRole {
     return "admin" in value ? UserRole.admin : "user" in value ? UserRole.user : "guest" in value ? UserRole.guest : value;
 }
-function to_candid_UserProfile_n10(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: UserProfile): _UserProfile {
-    return to_candid_record_n11(_uploadFile, _downloadFile, value);
-}
 function to_candid_UserRole_n1(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: UserRole): _UserRole {
     return to_candid_variant_n2(_uploadFile, _downloadFile, value);
-}
-function to_candid_record_n11(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
-    age: number;
-    currentHeightCm?: number;
-    motherHeightCm: number;
-    isMale: boolean;
-    gender: string;
-    fatherHeightCm: number;
-}): {
-    age: number;
-    currentHeightCm: [] | [number];
-    motherHeightCm: number;
-    isMale: boolean;
-    gender: string;
-    fatherHeightCm: number;
-} {
-    return {
-        age: value.age,
-        currentHeightCm: value.currentHeightCm ? candid_some(value.currentHeightCm) : candid_none(),
-        motherHeightCm: value.motherHeightCm,
-        isMale: value.isMale,
-        gender: value.gender,
-        fatherHeightCm: value.fatherHeightCm
-    };
 }
 function to_candid_variant_n2(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: UserRole): {
     admin: null;

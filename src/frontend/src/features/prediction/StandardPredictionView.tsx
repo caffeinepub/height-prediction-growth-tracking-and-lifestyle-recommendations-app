@@ -8,7 +8,7 @@ import { calculatePredictions } from './predictionFormulas';
 import { PredictionResultsTable } from './PredictionResultsTable';
 import { PredictionLoadingScreen } from './components/PredictionLoadingScreen';
 import { Activity, Info, ArrowLeft, AlertCircle } from 'lucide-react';
-import type { HeightPrediction } from '../../backend';
+import type { HeightPrediction } from '../../types/app-types';
 
 interface StandardPredictionViewProps {
   onBack: () => void;

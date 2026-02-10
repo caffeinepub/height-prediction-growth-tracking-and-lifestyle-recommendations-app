@@ -1,6 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import type { HeightMeasurement } from '../../backend';
+import type { HeightMeasurement } from '../../types/app-types';
 
 interface GrowthChartProps {
   logs: HeightMeasurement[];

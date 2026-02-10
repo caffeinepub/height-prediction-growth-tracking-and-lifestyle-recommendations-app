@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { ArrowLeft, RefreshCw, AlertTriangle, TrendingUp } from 'lucide-react';
 import type { PubertyStageResult } from './puberty/pubertyQuestionnaire';
-import type { UserProfile } from '../../backend';
+import type { UserProfile } from '../../types/app-types';
 import { estimateBoneAge, predictHeightFromBoneAge } from './puberty/boneAgeAndHeightEstimator';
 import { cmToFeetInches } from '../../utils/units';
 

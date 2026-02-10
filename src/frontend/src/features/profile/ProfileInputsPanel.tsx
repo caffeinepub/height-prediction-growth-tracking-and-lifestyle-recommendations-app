@@ -11,7 +11,7 @@ import { useSafeActor } from '../../hooks/useSafeActor';
 import { cmToInches, inchesToCm } from '../../utils/units';
 import { sanitizeHeightInput, handleHeightKeyDown, formatHeightDisplay, parseHeightInput } from '../../utils/heightInput';
 import { Info } from 'lucide-react';
-import type { UserProfile } from '../../backend';
+import type { UserProfile } from '../../types/app-types';
 
 export function ProfileInputsPanel() {
   const { identity } = useInternetIdentity();

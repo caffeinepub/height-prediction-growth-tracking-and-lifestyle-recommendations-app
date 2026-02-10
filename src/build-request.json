@@ -1,67 +1,38 @@
 {
   "kind": "build_request",
-  "title": "Fix global text color so all in-app text renders green",
+  "title": "Add maintenance mode to effectively disable the live app",
   "priority": "normal",
   "requirements": [
     {
       "id": "REQ-1",
-      "text": "Fix the Tailwind theme token values so the app’s default text color actually applies as green across the UI (all normal text that uses `text-foreground` / inherits from `body`). Update `frontend/src/index.css` CSS variables to match the format expected by `frontend/tailwind.config.js` (i.e., variables should be raw OKLCH components like `0.88 0.28 145`, not `oklch(...)`, because Tailwind already wraps them with `oklch(var(--...))`). Ensure both `:root` and `.dark` define `--foreground` (and related `*-foreground` variables used for typical text) as green so the user-visible text changes are clearly visible.",
+      "text": "Add a frontend-configurable \"maintenance mode\" that, when enabled, prevents normal app usage and displays a full-page maintenance message instead of the main application UI (header, hero, main content, footer).",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "recent-messages-4"
+          "msg-user-1"
         ],
         "quotes": [
-          "I meant to say the words letters data's In the app has to be green but there is no change"
+          "Please cancel the live"
         ]
       },
       "acceptanceCriteria": [
-        "After rebuild, body text (inherited default text) renders green across the app screens (Hero, Header, tabs, forms, panels) without requiring per-component overrides.",
-        "`frontend/src/index.css` uses variable values compatible with `tailwind.config.js` (no nested `oklch(oklch(...))` patterns for theme tokens like `--foreground`, `--background`, `--card`, `--muted`, etc.).",
-        "In both light and dark modes, `text-foreground` results in green text that is visibly different from white/gray/black.",
-        "No changes are made to any frontend immutable paths (e.g., `frontend/src/main.tsx`, `frontend/src/hooks/useInternetIdentity.ts(x)`, `frontend/src/hooks/useActor.ts`, `frontend/src/components/ui/*`)."
-      ]
-    },
-    {
-      "id": "REQ-2",
-      "text": "Audit and update any non-immutable UI components that hardcode text colors (e.g., `text-black`, `text-white`, or other non-token colors) so that user-facing text follows the theme tokens (prefer `text-foreground`, `text-muted-foreground`, `text-primary`, etc.) and therefore renders green by default as requested.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "recent-messages-4"
-        ],
-        "quotes": [
-          "the words letters data's In the app has to be green"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Spot-check: Header brand text, tab labels, panel titles, form labels/inputs, tables, and recommendation text all appear green (or green-tinted via theme tokens) rather than default black/white.",
-        "Any explicit text color utility classes that prevent the global green text from showing are removed/replaced in non-immutable components."
+        "A new environment variable is documented in frontend/.env.example (e.g., VITE_MAINTENANCE_MODE) with guidance on accepted values.",
+        "When maintenance mode is enabled, the app renders a maintenance screen and does not render the normal application content (HeroSection/MainContent) or show authentication actions.",
+        "The maintenance screen user-facing text is in English and clearly indicates the app is temporarily unavailable.",
+        "When maintenance mode is disabled/unset, the app behaves exactly as it did before the change."
       ]
     }
   ],
   "constraints": [
-    "Frontend must remain React + TypeScript + Tailwind + React Query.",
-    "Do not edit files under `frontend/src/components/ui` (shadcn UI sources) or any paths listed in `frontend.immutablePaths`.",
-    "Backend is out of scope unless required for text rendering (it should not be required for this request)."
+    "Do not edit files under frontend/src/components/ui or any frontend immutablePaths listed in SYSTEM_CONTEXT.",
+    "Use English for any user-facing text."
   ],
   "nonGoals": [
-    "Adding new app features unrelated to text color.",
-    "Changing authentication behavior (Internet Identity).",
-    "Introducing new theming systems beyond the existing Tailwind CSS variable-token approach."
+    "Implementing or integrating any platform-level deployment cancellation or CI/CD pipeline controls.",
+    "Adding third-party status pages, notifications, or external service integrations."
   ],
   "imageRequirements": {
     "required": [],
     "edits": []
-  },
-  "userProfileUpdate": {
-    "goalsToAdd": [],
-    "goalsToRemove": [],
-    "preferencesToAdd": [],
-    "preferencesToRemove": [],
-    "miscToAdd": [],
-    "miscToRemove": [],
-    "fieldsToSet": {},
-    "fieldsToDelete": []
   }
 }

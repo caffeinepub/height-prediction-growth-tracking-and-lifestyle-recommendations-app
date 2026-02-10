@@ -1,4 +1,4 @@
-import type { FormulaResult } from '../../backend';
+import type { FormulaResult } from '../../types/app-types';
 
 interface PredictionInput {
   age: number;
