@@ -1,24 +1,35 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-10T07:14:02.475Z",
+  "generatedAt": "2026-02-10T07:20:15.210Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 1,
-    "implemented": 1,
+    "total": 2,
+    "implemented": 2,
     "items": [
       {
         "id": "REQ-1",
-        "summary": "Change the app’s default text color to neon green across the UI by updating the Tailwind theme tokens so that all elements using the standard foreground text color (e.g., body text via `text-foreground`) render in neon green in both light and dark themes.",
+        "summary": "Fix the Tailwind theme token values so the app’s default text color actually applies as green across the UI (all normal text that uses `text-foreground` / inherits from `body`). Update `frontend/src/index.css` CSS variables to match the format expected by `frontend/tailwind.config.js` (i.e., variables should be raw OKLCH components like `0.88 0.28 145`, not `oklch(...)`, because Tailwind already wraps them with `oklch(var(--...))`). Ensure both `:root` and `.dark` define `--foreground` (and related `*-foreground` variables used for typical text) as green so the user-visible text changes are clearly visible.",
         "status": "implemented",
         "plannedFiles": [
           "frontend/src/index.css"
         ],
         "matchedFiles": [
           "frontend/src/index.css"
+        ]
+      },
+      {
+        "id": "REQ-2",
+        "summary": "Audit and update any non-immutable UI components that hardcode text colors (e.g., `text-black`, `text-white`, or other non-token colors) so that user-facing text follows the theme tokens (prefer `text-foreground`, `text-muted-foreground`, `text-primary`, etc.) and therefore renders green by default as requested.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/features/growth/GrowthChart.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/features/growth/GrowthChart.tsx"
         ]
       }
     ]
@@ -28,6 +39,7 @@
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
+    "frontend/src/features/growth/GrowthChart.tsx",
     "frontend/src/index.css",
     "project_state.json",
     "scratch/component-selection.json",

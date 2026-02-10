@@ -3,14 +3,24 @@
   "projectStateVersion": 3,
   "summary": "New project",
   "architectural_notes": [],
-  "known_issues": [],
-  "isFixRequest": false,
+  "known_issues": [
+    "Requested green text change is not appearing in the app (no visible change after build/deploy)."
+  ],
+  "isFixRequest": true,
   "existing_features": [
     {
-      "id": "feature-change-the-app-s-default-text-color-to-neon-green-across-the-ui-by-updating-the-tailwind-theme-tokens-so-that-all-elements-using-the-standard-foreground-text-color-e-g-body-text-via-text-foreground-render-in-neon-green-in-both-light-and-dark-themes",
-      "title": "Change the app’s default text color to neon green across the UI by updating the Tailwind theme tokens so that all elements using the standard foreground text color (e.g., body text via `text-foreground`) render in neon green in both light and dark themes.",
+      "id": "feature-fix-the-tailwind-theme-token-values-so-the-app-s-default-text-color-actually-applies-as-green-across-the-ui-all-normal-text-that-uses-text-foreground-inherits-from-body-update-frontend-src-index-css-css-variables-to-match-the-format-expected-by-frontend-tailwind-config-js-i-e-variables-should-be-raw-oklch-components-like-0-88-0-28-145-not-oklch-because-tailwind-already-wraps-them-with-oklch-var-ensure-both-root-and-dark-define-foreground-and-related-foreground-variables-used-for-typical-text-as-green-so-the-user-visible-text-changes-are-clearly-visible",
+      "title": "Fix the Tailwind theme token values so the app’s default text color actually applies as green across the UI (all normal text that uses `text-foreground` / inherits from `body`). Update `frontend/src/index.css` CSS variables to match the format expected by `frontend/tailwind.config.js` (i.e., variables should be raw OKLCH components like `0.88 0.28 145`, not `oklch(...)`, because Tailwind already wraps them with `oklch(var(--...))`). Ensure both `:root` and `.dark` define `--foreground` (and related `*-foreground` variables used for typical text) as green so the user-visible text changes are clearly visible.",
       "reqIds": [
         "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-audit-and-update-any-non-immutable-ui-components-that-hardcode-text-colors-e-g-text-black-text-white-or-other-non-token-colors-so-that-user-facing-text-follows-the-theme-tokens-prefer-text-foreground-text-muted-foreground-text-primary-etc-and-therefore-renders-green-by-default-as-requested",
+      "title": "Audit and update any non-immutable UI components that hardcode text colors (e.g., `text-black`, `text-white`, or other non-token colors) so that user-facing text follows the theme tokens (prefer `text-foreground`, `text-muted-foreground`, `text-primary`, etc.) and therefore renders green by default as requested.",
+      "reqIds": [
+        "REQ-2"
       ],
       "version": 1
     }
@@ -18,12 +28,12 @@
   "new_feature_requests": [
     {
       "id": "AR-1",
-      "summary": "Change the text color to neon green",
+      "summary": "Make the in-app text (\"words letters data's\") display in green",
       "reqIds": [],
       "status": "pending"
     }
   ],
-  "projectName": "Update global text color to neon green",
+  "projectName": "Fix global text color so all in-app text renders green",
   "clarification_mode": "instant",
   "clarification_rounds": 0
 }

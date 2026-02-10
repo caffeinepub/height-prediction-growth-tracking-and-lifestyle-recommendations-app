@@ -28,26 +28,26 @@ export function GrowthChart({ logs }: GrowthChartProps) {
             <XAxis
               dataKey="date"
               className="text-xs"
-              tick={{ fill: 'hsl(var(--muted-foreground))' }}
+              tick={{ fill: 'oklch(var(--muted-foreground))' }}
             />
             <YAxis
               label={{ value: 'Height (cm)', angle: -90, position: 'insideLeft' }}
               className="text-xs"
-              tick={{ fill: 'hsl(var(--muted-foreground))' }}
+              tick={{ fill: 'oklch(var(--muted-foreground))' }}
             />
             <Tooltip
               contentStyle={{
-                backgroundColor: 'hsl(var(--popover))',
-                border: '1px solid hsl(var(--border))',
+                backgroundColor: 'oklch(var(--popover))',
+                border: '1px solid oklch(var(--border))',
                 borderRadius: '0.5rem',
               }}
             />
             <Line
               type="monotone"
               dataKey="height"
-              stroke="hsl(var(--chart-1))"
+              stroke="oklch(var(--chart-1))"
               strokeWidth={2}
-              dot={{ fill: 'hsl(var(--chart-1))' }}
+              dot={{ fill: 'oklch(var(--chart-1))' }}
             />
           </LineChart>
         </ResponsiveContainer>

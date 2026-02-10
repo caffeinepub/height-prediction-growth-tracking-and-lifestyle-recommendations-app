@@ -1,21 +1,37 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Update global foreground text token to neon green",
+  "title": "Make global text render green by fixing Tailwind OKLCH token variables",
   "requirements": [
     {
       "id": "REQ-1",
-      "summary": "Update Tailwind theme foreground token so default `text-foreground` renders neon green in both light and dark themes across the UI.",
+      "summary": "Update theme CSS variables to use raw OKLCH components so Tailwind’s `text-foreground` resolves to green in light and dark modes.",
       "acceptanceCriteria": [
-        "All default text that currently derives from the `foreground` theme token renders in a neon-green color across the app (Header, HeroSection, tabs, panels, tables, dialogs).",
-        "The change is implemented via theme variables (e.g., in `frontend/src/index.css`) rather than ad-hoc per-component overrides, so the color is consistent across screens.",
-        "Both light mode (`:root`) and dark mode (`.dark`) have neon-green foreground text with readable contrast against the existing dark-green/black backgrounds."
+        "After rebuild, body text (inherited default text) renders green across the app screens (Hero, Header, tabs, forms, panels) without requiring per-component overrides.",
+        "`frontend/src/index.css` uses variable values compatible with `tailwind.config.js` (no nested `oklch(oklch(...))` patterns for theme tokens like `--foreground`, `--background`, `--card`, `--muted`, etc.).",
+        "In both light and dark modes, `text-foreground` results in green text that is visibly different from white/gray/black.",
+        "No changes are made to any frontend immutable paths (e.g., `frontend/src/main.tsx`, `frontend/src/hooks/useInternetIdentity.ts(x)`, `frontend/src/hooks/useActor.ts`, `frontend/src/components/ui/*`)."
       ],
       "file_operations": [
         {
           "path": "frontend/src/index.css",
           "operation": "modify",
-          "description": "Change the theme CSS variables for `--foreground` (and the matching text foreground variables that currently mirror it, such as `--card-foreground`, `--popover-foreground`, and `--secondary-foreground`) in both `:root` and `.dark` to a neon-green OKLCH value, ensuring adequate contrast against existing dark green backgrounds. Keep the implementation token-based (no per-component overrides) and do not edit any files under `frontend/src/components/ui`."
+          "description": "Replace `--*` theme token values currently written as `oklch(...)` with raw OKLCH components (e.g., `--foreground: 0.88 0.28 145;`) so Tailwind’s `oklch(var(--...))` wrapping in `frontend/tailwind.config.js` does not create nested `oklch(oklch(...))`. Ensure both `:root` and `.dark` define `--foreground` (and related `*-foreground` tokens like `--card-foreground`, `--popover-foreground`, `--secondary-foreground`, etc.) as clearly green so default/inherited text becomes visibly green across the UI."
+        }
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "summary": "Remove/replace non-token text color usage in non-immutable components so text follows theme tokens and renders green by default.",
+      "acceptanceCriteria": [
+        "Spot-check: Header brand text, tab labels, panel titles, form labels/inputs, tables, and recommendation text all appear green (or green-tinted via theme tokens) rather than default black/white.",
+        "Any explicit text color utility classes that prevent the global green text from showing are removed/replaced in non-immutable components."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/features/growth/GrowthChart.tsx",
+          "operation": "modify",
+          "description": "Audit and update any hardcoded or token-incompatible color strings used for chart axes/tooltip styling (e.g., `hsl(var(--muted-foreground))`, `hsl(var(--popover))`, `hsl(var(--border))`, `hsl(var(--chart-1))`) so they correctly reference the app’s Tailwind OKLCH token variables (using `oklch(var(--...))`-compatible values) and therefore render green-tinted text/labels consistently with the theme."
         }
       ]
     }

@@ -2,8 +2,8 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-change-the-app-s-default-text-color-to-neon-green-across-the-ui-by-updating-the-tailwind-theme-tokens-so-that-all-elements-using-the-standard-foreground-text-color-e-g-body-text-via-text-foreground-render-in-neon-green-in-both-light-and-dark-themes",
-      "featureTitle": "Change the app’s default text color to neon green across the UI by updating the Tailwind theme tokens so that all elements using the standard foreground text color (e.g., body text via `text-foreground`) render in neon green in both light and dark themes.",
+      "featureId": "feature-fix-the-tailwind-theme-token-values-so-the-app-s-default-text-color-actually-applies-as-green-across-the-ui-all-normal-text-that-uses-text-foreground-inherits-from-body-update-frontend-src-index-css-css-variables-to-match-the-format-expected-by-frontend-tailwind-config-js-i-e-variables-should-be-raw-oklch-components-like-0-88-0-28-145-not-oklch-because-tailwind-already-wraps-them-with-oklch-var-ensure-both-root-and-dark-define-foreground-and-related-foreground-variables-used-for-typical-text-as-green-so-the-user-visible-text-changes-are-clearly-visible",
+      "featureTitle": "Fix the Tailwind theme token values so the app’s default text color actually applies as green across the UI (all normal text that uses `text-foreground` / inherits from `body`). Update `frontend/src/index.css` CSS variables to match the format expected by `frontend/tailwind.config.js` (i.e., variables should be raw OKLCH components like `0.88 0.28 145`, not `oklch(...)`, because Tailwind already wraps them with `oklch(var(--...))`). Ensure both `:root` and `.dark` define `--foreground` (and related `*-foreground` variables used for typical text) as green so the user-visible text changes are clearly visible.",
       "files": [
         "frontend/src/index.css"
       ],
@@ -17,6 +17,25 @@
       ],
       "testIds": [
         "REQ-1"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-audit-and-update-any-non-immutable-ui-components-that-hardcode-text-colors-e-g-text-black-text-white-or-other-non-token-colors-so-that-user-facing-text-follows-the-theme-tokens-prefer-text-foreground-text-muted-foreground-text-primary-etc-and-therefore-renders-green-by-default-as-requested",
+      "featureTitle": "Audit and update any non-immutable UI components that hardcode text colors (e.g., `text-black`, `text-white`, or other non-token colors) so that user-facing text follows the theme tokens (prefer `text-foreground`, `text-muted-foreground`, `text-primary`, etc.) and therefore renders green by default as requested.",
+      "files": [
+        "frontend/src/features/growth/GrowthChart.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-2"
       ],
       "confidence": "high"
     }

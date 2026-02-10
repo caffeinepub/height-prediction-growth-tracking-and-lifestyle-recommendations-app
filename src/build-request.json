@@ -1,37 +1,67 @@
 {
   "kind": "build_request",
-  "title": "Update global text color to neon green",
+  "title": "Fix global text color so all in-app text renders green",
   "priority": "normal",
   "requirements": [
     {
       "id": "REQ-1",
-      "text": "Change the app’s default text color to neon green across the UI by updating the Tailwind theme tokens so that all elements using the standard foreground text color (e.g., body text via `text-foreground`) render in neon green in both light and dark themes.",
+      "text": "Fix the Tailwind theme token values so the app’s default text color actually applies as green across the UI (all normal text that uses `text-foreground` / inherits from `body`). Update `frontend/src/index.css` CSS variables to match the format expected by `frontend/tailwind.config.js` (i.e., variables should be raw OKLCH components like `0.88 0.28 145`, not `oklch(...)`, because Tailwind already wraps them with `oklch(var(--...))`). Ensure both `:root` and `.dark` define `--foreground` (and related `*-foreground` variables used for typical text) as green so the user-visible text changes are clearly visible.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-1"
+          "recent-messages-4"
         ],
         "quotes": [
-          "Make the text neon green"
+          "I meant to say the words letters data's In the app has to be green but there is no change"
         ]
       },
       "acceptanceCriteria": [
-        "All default text that currently derives from the `foreground` theme token renders in a neon-green color across the app (Header, HeroSection, tabs, panels, tables, dialogs).",
-        "The change is implemented via theme variables (e.g., in `frontend/src/index.css`) rather than ad-hoc per-component overrides, so the color is consistent across screens.",
-        "Both light mode (`:root`) and dark mode (`.dark`) have neon-green foreground text with readable contrast against the existing dark-green/black backgrounds."
+        "After rebuild, body text (inherited default text) renders green across the app screens (Hero, Header, tabs, forms, panels) without requiring per-component overrides.",
+        "`frontend/src/index.css` uses variable values compatible with `tailwind.config.js` (no nested `oklch(oklch(...))` patterns for theme tokens like `--foreground`, `--background`, `--card`, `--muted`, etc.).",
+        "In both light and dark modes, `text-foreground` results in green text that is visibly different from white/gray/black.",
+        "No changes are made to any frontend immutable paths (e.g., `frontend/src/main.tsx`, `frontend/src/hooks/useInternetIdentity.ts(x)`, `frontend/src/hooks/useActor.ts`, `frontend/src/components/ui/*`)."
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Audit and update any non-immutable UI components that hardcode text colors (e.g., `text-black`, `text-white`, or other non-token colors) so that user-facing text follows the theme tokens (prefer `text-foreground`, `text-muted-foreground`, `text-primary`, etc.) and therefore renders green by default as requested.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "recent-messages-4"
+        ],
+        "quotes": [
+          "the words letters data's In the app has to be green"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Spot-check: Header brand text, tab labels, panel titles, form labels/inputs, tables, and recommendation text all appear green (or green-tinted via theme tokens) rather than default black/white.",
+        "Any explicit text color utility classes that prevent the global green text from showing are removed/replaced in non-immutable components."
       ]
     }
   ],
   "constraints": [
-    "Do not edit files under `frontend/src/components/ui` (read-only UI component sources).",
-    "Backend (Motoko) logic must remain unchanged for this styling-only request."
+    "Frontend must remain React + TypeScript + Tailwind + React Query.",
+    "Do not edit files under `frontend/src/components/ui` (shadcn UI sources) or any paths listed in `frontend.immutablePaths`.",
+    "Backend is out of scope unless required for text rendering (it should not be required for this request)."
   ],
   "nonGoals": [
-    "Do not redesign layouts, spacing, typography, or component structure beyond what is necessary to achieve neon-green text.",
-    "Do not change non-text colors (backgrounds, borders, card fills) unless required to preserve readability/contrast."
+    "Adding new app features unrelated to text color.",
+    "Changing authentication behavior (Internet Identity).",
+    "Introducing new theming systems beyond the existing Tailwind CSS variable-token approach."
   ],
   "imageRequirements": {
     "required": [],
     "edits": []
+  },
+  "userProfileUpdate": {
+    "goalsToAdd": [],
+    "goalsToRemove": [],
+    "preferencesToAdd": [],
+    "preferencesToRemove": [],
+    "miscToAdd": [],
+    "miscToRemove": [],
+    "fieldsToSet": {},
+    "fieldsToDelete": []
   }
 }
